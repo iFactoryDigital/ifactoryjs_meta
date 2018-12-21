@@ -13,11 +13,10 @@ const Controller = require('controller');
  * @priority 90
  */
 class MetaController extends Controller {
-
   /**
    * Construct example controller class
    */
-  constructor () {
+  constructor() {
     // Run super eden
     super();
 
@@ -25,8 +24,8 @@ class MetaController extends Controller {
     this._sitemap = null;
 
     // Bind private methods
-    this._compile    = this._compile.bind(this);
-    this._generate   = this._generate.bind(this);
+    this._compile = this._compile.bind(this);
+    this._generate = this._generate.bind(this);
     this._middleware = this._middleware.bind(this);
 
     // Run middleware
@@ -55,7 +54,7 @@ class MetaController extends Controller {
    *
    * @return {Promise}
    */
-  async sitemap (req, res, next) {
+  async sitemap(req, res, next) {
     // Check sitemap
     if (!this._sitemap) return next();
 
@@ -77,18 +76,18 @@ class MetaController extends Controller {
    *
    * @return {Promise}
    */
-  async _generate () {
+  async _generate() {
     // Create sitemap
-    let map = {
-      'hostname'  : 'https://' + config.get('domain'),
-      'cacheTime' : config.get('sitemap.cache') || 600000,
-      'urls'      : [
+    const map = {
+      hostname  : `https://${config.get('domain')}`,
+      cacheTime : config.get('sitemap.cache') || 600000,
+      urls      : [
         {
-          'url'        : '',
-          'priority'   : 1,
-          'changefreq' : 'daily'
-        }
-      ]
+          url        : '',
+          priority   : 1,
+          changefreq : 'daily',
+        },
+      ],
     };
 
     // Hook generate
@@ -111,9 +110,9 @@ class MetaController extends Controller {
    *
    * @return {Promise}
    */
-  async _compile (render) {
+  async _compile(render) {
     // Check meta
-    let meta = render.state.meta || {};
+    const meta = render.state.meta || {};
 
     // Delete meta
     delete render.state.meta;
@@ -122,7 +121,7 @@ class MetaController extends Controller {
     if (!render.page.head) render.page.head = '';
 
     // Sort types
-    let types = Object.keys(meta).sort();
+    const types = Object.keys(meta).sort();
 
     // Loop meta
     types.forEach((type) => {
@@ -130,23 +129,25 @@ class MetaController extends Controller {
       let names = Object.keys(meta[type]);
 
       // Check if meta
-      if (type === 'meta') names = names.sort((a, b) => {
+      if (type === 'meta') {
+        names = names.sort((a, b) => {
         // Return a/b
-        a = (meta[type][a].property || meta[type][a].name || '').split(':')[0];
-        b = (meta[type][b].property || meta[type][b].name || '').split(':')[0];
+          a = (meta[type][a].property || meta[type][a].name || '').split(':')[0];
+          b = (meta[type][b].property || meta[type][b].name || '').split(':')[0];
 
-        // Return sorted
-        return a > b ? -1 : a < b ? 1 : 0;
-      });
+          // Return sorted
+          return a > b ? -1 : a < b ? 1 : 0;
+        });
+      }
 
       // Loop for name
       names.forEach((name) => {
         // Let value
-        let keys  = Object.keys(meta[type][name]).sort().reverse();
-        let value = meta[type][name];
+        const keys  = Object.keys(meta[type][name]).sort().reverse();
+        const value = meta[type][name];
 
         // Add to head
-        render.page.head += '<' + type;
+        render.page.head += `<${type}`;
 
         // Loop for tags
         for (let i = 0; i < keys.length; i++) {
@@ -154,7 +155,7 @@ class MetaController extends Controller {
           if (keys[i] === 'id') continue;
 
           // Add tag
-          render.page.head += ' ' + keys[i] + '="' + value[keys[i]] + '"';
+          render.page.head += ` ${keys[i]}="${value[keys[i]]}"`;
         }
 
         // Close tag
@@ -172,7 +173,7 @@ class MetaController extends Controller {
    *
    * @private
    */
-  async _middleware (req, res, next) {
+  async _middleware(req, res, next) {
     // Create meta function
     req.meta = res.meta = (type, opts) => {
       // Check type and opts
@@ -183,18 +184,18 @@ class MetaController extends Controller {
       }
 
       // Get name
-      let name = opts.id || uuid();
+      const name = opts.id || uuid();
 
       // Check type
-      if (type === 'title')       return req.title(opts);
-      if (type === 'image')       return req.image(opts);
+      if (type === 'title') return req.title(opts);
+      if (type === 'image') return req.image(opts);
       if (type === 'description') return req.description(opts);
 
       // Check opts
       if (typeof opts === 'string') {
         opts = {
-          'name'    : type,
-          'content' : opts
+          name    : type,
+          content : opts,
         };
         type = 'meta';
       }
@@ -216,9 +217,9 @@ class MetaController extends Controller {
     req.og = res.og = (name, content, id) => {
       // Add description
       req.meta({
-        'id'       : id,
-        'content'  : content,
-        'property' : 'og:' + name
+        id,
+        content,
+        property : `og:${name}`,
       });
 
       // Return req
@@ -229,9 +230,9 @@ class MetaController extends Controller {
     req.article = res.article = (name, content, id) => {
       // Add description
       req.meta({
-        'id'       : id,
-        'content'  : content,
-        'property' : 'article:' + name
+        id,
+        content,
+        property : `article:${name}`,
       });
 
       // Return req
@@ -242,9 +243,9 @@ class MetaController extends Controller {
     req.twitter = res.twitter = (name, content, id) => {
       // Add description
       req.meta({
-        'id'      : id,
-        'name'    : 'twitter:' + name,
-        'content' : content
+        id,
+        name    : `twitter:${name}`,
+        content,
       });
 
       // Return req
@@ -262,9 +263,9 @@ class MetaController extends Controller {
       // Add description
       req.og('title', req.t(title), 'og:title');
       req.meta({
-        'id'       : 'title',
-        'content'  : req.t(title),
-        'itemprop' : 'name'
+        id       : 'title',
+        content  : req.t(title),
+        itemprop : 'name',
       });
       req.twitter('title', req.t(title), 'twitter:title');
 
@@ -277,7 +278,7 @@ class MetaController extends Controller {
       // Trim description
       if (description.length > 160) {
         // Get descriotion
-        let split = description.substring(0, 160).split(' ');
+        const split = description.substring(0, 160).split(' ');
 
         // Slice
         description = split.splice(0, (split.length - 1)).join(' ');
@@ -286,10 +287,10 @@ class MetaController extends Controller {
       // Add description
       req.og('description', description, 'og:description');
       req.meta({
-        'id'       : 'description',
-        'name'     : 'description',
-        'content'  : description,
-        'itemprop' : 'description'
+        id       : 'description',
+        name     : 'description',
+        content  : description,
+        itemprop : 'description',
       });
       req.twitter('description', description, 'twitter:description');
 
@@ -303,17 +304,17 @@ class MetaController extends Controller {
       req.og('image', url);
 
       // Set size
-      if (width)  req.og('image:width',  width);
+      if (width) req.og('image:width', width);
       if (height) req.og('image:height', height);
 
       // Set url
-      req.og('image:url',        url);
+      req.og('image:url', url);
       req.og('image:secure_url', url);
 
       // Set itemprop
       req.meta({
-        'content'  : url,
-        'itemprop' : 'image'
+        content  : url,
+        itemprop : 'image',
       });
 
       // Set twitter
@@ -327,7 +328,7 @@ class MetaController extends Controller {
     req.title(config.get('title'));
 
     // Set default
-    req.og('url', 'https://' + config.get('domain') + req.url, 'og:url');
+    req.og('url', `https://${config.get('domain')}${req.url}`, 'og:url');
     req.og('locale', req.language, 'og:locale');
     req.twitter('card', 'summary', 'twitter:summary');
     req.twitter('site', config.get('title'), 'twitter:site');
