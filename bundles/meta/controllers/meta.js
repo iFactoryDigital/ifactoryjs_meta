@@ -1,3 +1,5 @@
+/* eslint-disable no-nested-ternary */
+/* eslint-disable prefer-destructuring */
 // Use strict
 
 
@@ -59,7 +61,7 @@ class MetaController extends Controller {
     if (!this._sitemap) return next();
 
     // Return sitemap
-    this._sitemap.toXML((err, xml) => {
+    return this._sitemap.toXML((err, xml) => {
       // Check error
       if (err) return next();
 
@@ -67,7 +69,7 @@ class MetaController extends Controller {
       res.header('Content-Type', 'application/xml');
 
       // Send xml
-      res.send(xml);
+      return res.send(xml);
     });
   }
 
@@ -150,7 +152,7 @@ class MetaController extends Controller {
         render.page.head += `<${type}`;
 
         // Loop for tags
-        for (let i = 0; i < keys.length; i++) {
+        for (let i = 0; i < keys.length; i += 1) {
           // Check tag
           if (keys[i] === 'id') continue;
 
@@ -175,7 +177,7 @@ class MetaController extends Controller {
    */
   async _middleware(req, res, next) {
     // Create meta function
-    req.meta = res.meta = (type, opts) => {
+    const metaMiddleware = (type, opts) => {
       // Check type and opts
       if (typeof type === 'object' || !opts) {
         // Set variables
@@ -213,8 +215,12 @@ class MetaController extends Controller {
       return res;
     };
 
+    // set to req/res
+    req.meta = metaMiddleware;
+    res.meta = metaMiddleware;
+
     // Create description
-    req.og = res.og = (name, content, id) => {
+    const ogMiddleware = (name, content, id) => {
       // Add description
       req.meta({
         id,
@@ -226,8 +232,12 @@ class MetaController extends Controller {
       return res;
     };
 
+    // set to req/res
+    req.og = ogMiddleware;
+    res.og = ogMiddleware;
+
     // Create description
-    req.article = res.article = (name, content, id) => {
+    const articleMiddleware = (name, content, id) => {
       // Add description
       req.meta({
         id,
@@ -239,8 +249,12 @@ class MetaController extends Controller {
       return res;
     };
 
+    // set to req/res
+    req.article = articleMiddleware;
+    res.article = articleMiddleware;
+
     // Create description
-    req.twitter = res.twitter = (name, content, id) => {
+    const twitterMiddleware = (name, content, id) => {
       // Add description
       req.meta({
         id,
@@ -252,8 +266,12 @@ class MetaController extends Controller {
       return res;
     };
 
+    // add to req/res
+    req.twitter = twitterMiddleware;
+    res.twitter = twitterMiddleware;
+
     // Create description
-    req.title = res.title = (title) => {
+    const titleMiddleware = (title) => {
       // Set title
       res.locals.page = res.locals.page || {};
 
@@ -273,8 +291,12 @@ class MetaController extends Controller {
       return res;
     };
 
+    // add to req/res
+    req.title = titleMiddleware;
+    res.title = titleMiddleware;
+
     // Create description
-    req.description = res.description = (description) => {
+    const descriptionMiddleware = (description) => {
       // Trim description
       if (description.length > 160) {
         // Get descriotion
@@ -298,8 +320,12 @@ class MetaController extends Controller {
       return res;
     };
 
+    // add to req/res
+    req.description = descriptionMiddleware;
+    res.description = descriptionMiddleware;
+
     // Create description
-    req.image = res.image = (url, width, height) => {
+    const imageMiddleware = (url, width, height) => {
       // Add image
       req.og('image', url);
 
@@ -324,6 +350,10 @@ class MetaController extends Controller {
       return res;
     };
 
+    // add to req/res
+    req.image = imageMiddleware;
+    res.image = imageMiddleware;
+
     // Set default title
     req.title(config.get('title'));
 
@@ -343,4 +373,4 @@ class MetaController extends Controller {
  *
  * @type {MetaController}
  */
-exports = module.exports = MetaController;
+module.exports = MetaController;
