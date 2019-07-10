@@ -17,9 +17,78 @@ Meta base logic component for [EdenJS](https://github.com/edenjs-cli)
 npm i --save @edenjs/meta
 ```
 
+### Hooks
+
+#### `sitemap` _[Usage](https://github.com/eden-js/meta/blob/master/bundles/meta/controllers/meta.js#L96)_
+
+The sitemap hook allows you to add things to the global sitemap. _[Usage](https://github.com/eden-js/shop/blob/master/bundles/product/controllers/product.js#L49)_
+
+```js
+// pre sitemap
+this.eden.pre('sitemap', async (map) => {
+  // get products
+  const products = await Product.find({
+    published : true,
+  });
+
+  // get categories
+  await Promise.all(products.map(async (product) => {
+    // add to eden
+    map.urls.push({
+      url : `/product/${product.get('slug')}`,
+      img : await Promise.all((await product.get('images') || []).map(async (image) => {
+        // return image
+        return {
+          url     : await image.url('md-sq'),
+          title   : product.get('title.en-us'),
+          caption : image.get('name'),
+          license : 'https://creativecommons.org/licenses/by/4.0/',
+        };
+      })),
+      lastmod    : product.get('updated_at'),
+      priority   : 0.8,
+      changefreq : 'daily',
+    });
+  }));
+});
+```
+
+This can also be done in a build function. _[Usage](https://github.com/eden-js/shop/blob/master/bundles/product/controllers/product.js#L49)_
+
+
+```js
+/**
+ * order individual item
+ */
+const build = () => {
+  // get categories
+  (await Product.find({
+    published : true,
+  })).map(async (product) => {
+    // add to eden
+    // this.eden must be in a controller/daemon extended the core daemon/controller
+    this.eden.sitemap.add({
+      url : `/product/${product.get('slug')}`,
+      img : await Promise.all((await product.get('images') || []).map(async (image) => {
+        // return image
+        return {
+          url     : await image.url('md-sq'),
+          title   : product.get('title.en-us'),
+          caption : image.get('name'),
+          license : 'https://creativecommons.org/licenses/by/4.0/',
+        };
+      })),
+      lastmod    : product.get('updated_at'),
+      priority   : 0.8,
+      changefreq : 'daily',
+    });
+  });
+}
+```
+
 ### Functions
 
-#### `res.meta` _[Usage](https://google.com)_
+#### `res.meta` _[Usage](https://github.com/eden-js/meta/blob/master/bundles/meta/controllers/meta.js#L180)_
 
 ```js
 /**
@@ -33,7 +102,7 @@ testAction(req, res) {
 }
 ```
 
-#### `res.og` _[Usage](https://google.com)_
+#### `res.og` _[Usage](https://github.com/eden-js/meta/blob/master/bundles/meta/controllers/meta.js#L223)_
 
 ```js
 /**
@@ -47,7 +116,7 @@ testAction(req, res) {
 }
 ```
 
-#### `res.article` _[Usage](https://google.com)_
+#### `res.article` _[Usage](https://github.com/eden-js/meta/blob/master/bundles/meta/controllers/meta.js#L240)_
 
 ```js
 /**
@@ -61,7 +130,7 @@ testAction(req, res) {
 }
 ```
 
-#### `res.twitter` _[Usage](https://google.com)_
+#### `res.twitter` _[Usage](https://github.com/eden-js/meta/blob/master/bundles/meta/controllers/meta.js#L257)_
 
 ```js
 /**
@@ -75,7 +144,7 @@ testAction(req, res) {
 }
 ```
 
-#### `res.title` _[Usage](https://google.com)_
+#### `res.title` _[Usage](https://github.com/eden-js/meta/blob/master/bundles/meta/controllers/meta.js#L274)_
 
 ```js
 /**
@@ -89,7 +158,7 @@ testAction(req, res) {
 }
 ```
 
-#### `res.description` _[Usage](https://google.com)_
+#### `res.description` _[Usage](https://github.com/eden-js/meta/blob/master/bundles/meta/controllers/meta.js#L299)_
 
 ```js
 /**
@@ -103,7 +172,7 @@ testAction(req, res) {
 }
 ```
 
-#### `res.image` _[Usage](https://google.com)_
+#### `res.image` _[Usage](https://github.com/eden-js/meta/blob/master/bundles/meta/controllers/meta.js#L328)_
 
 ```js
 /**
