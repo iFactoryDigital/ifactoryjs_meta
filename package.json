@@ -1,7 +1,7 @@
 {
   "name": "@edenjs/meta",
   "description": "",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "dependencies": {
     "sitemap": "^3.2.1",
     "uuid": "^3.3.2"
