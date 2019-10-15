@@ -1,8 +1,8 @@
 # EdenJS - Meta
-[![TravisCI](https://travis-ci.com/eden-js/meta.svg?branch=master)](https://travis-ci.com/eden-js/meta)
-[![Issues](https://img.shields.io/github/issues/eden-js/meta.svg)](https://github.com/eden-js/meta/issues)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/eden-js/meta)
-[![Awesome](https://img.shields.io/badge/awesome-true-green.svg)](https://github.com/eden-js/meta)
+[![TravisCI](https://travis-ci.com/ifactorydigital/ifactoryjs_meta.svg?branch=master)](https://travis-ci.com/ifactorydigital/ifactoryjs_meta)
+[![Issues](https://img.shields.io/github/issues/ifactorydigital/ifactoryjs_meta.svg)](https://github.com/ifactorydigital/ifactoryjs_meta/issues)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/ifactorydigital/ifactoryjs_meta)
+[![Awesome](https://img.shields.io/badge/awesome-true-green.svg)](https://github.com/ifactorydigital/ifactoryjs_meta)
 [![Discord](https://img.shields.io/discord/583845970433933312.svg)](https://discord.gg/5u3f3up)
 
 Meta base logic component for [EdenJS](https://github.com/edenjs-cli)
@@ -19,9 +19,9 @@ npm i --save @edenjs/meta
 
 ### Hooks
 
-#### `sitemap` _[Usage](https://github.com/eden-js/meta/blob/master/bundles/meta/controllers/meta.js#L96)_
+#### `sitemap` _[Usage](https://github.com/ifactorydigital/ifactoryjs_meta/blob/master/bundles/meta/controllers/meta.js#L96)_
 
-The sitemap hook allows you to add things to the global sitemap. _[Usage](https://github.com/eden-js/shop/blob/master/bundles/product/controllers/product.js#L49)_
+The sitemap hook allows you to add things to the global sitemap. _[Usage](https://github.com/ifactorydigital/ifactoryjs_shop/blob/master/bundles/product/controllers/product.js#L49)_
 
 ```js
 // pre sitemap
@@ -53,7 +53,7 @@ this.eden.pre('sitemap', async (map) => {
 });
 ```
 
-This can also be done in a build function. _[Usage](https://github.com/eden-js/shop/blob/master/bundles/product/controllers/product.js#L49)_
+This can also be done in a build function. _[Usage](https://github.com/ifactorydigital/ifactoryjs_shop/blob/master/bundles/product/controllers/product.js#L49)_
 
 
 ```js
@@ -88,7 +88,7 @@ const build = () => {
 
 ### Functions
 
-#### `res.meta` _[Usage](https://github.com/eden-js/meta/blob/master/bundles/meta/controllers/meta.js#L180)_
+#### `res.meta` _[Usage](https://github.com/ifactorydigital/ifactoryjs_meta/blob/master/bundles/meta/controllers/meta.js#L180)_
 
 ```js
 /**
@@ -102,7 +102,7 @@ testAction(req, res) {
 }
 ```
 
-#### `res.og` _[Usage](https://github.com/eden-js/meta/blob/master/bundles/meta/controllers/meta.js#L223)_
+#### `res.og` _[Usage](https://github.com/ifactorydigital/ifactoryjs_meta/blob/master/bundles/meta/controllers/meta.js#L223)_
 
 ```js
 /**
@@ -116,7 +116,7 @@ testAction(req, res) {
 }
 ```
 
-#### `res.article` _[Usage](https://github.com/eden-js/meta/blob/master/bundles/meta/controllers/meta.js#L240)_
+#### `res.article` _[Usage](https://github.com/ifactorydigital/ifactoryjs_meta/blob/master/bundles/meta/controllers/meta.js#L240)_
 
 ```js
 /**
@@ -130,7 +130,7 @@ testAction(req, res) {
 }
 ```
 
-#### `res.twitter` _[Usage](https://github.com/eden-js/meta/blob/master/bundles/meta/controllers/meta.js#L257)_
+#### `res.twitter` _[Usage](https://github.com/ifactorydigital/ifactoryjs_meta/blob/master/bundles/meta/controllers/meta.js#L257)_
 
 ```js
 /**
@@ -144,7 +144,7 @@ testAction(req, res) {
 }
 ```
 
-#### `res.title` _[Usage](https://github.com/eden-js/meta/blob/master/bundles/meta/controllers/meta.js#L274)_
+#### `res.title` _[Usage](https://github.com/ifactorydigital/ifactoryjs_meta/blob/master/bundles/meta/controllers/meta.js#L274)_
 
 ```js
 /**
@@ -158,7 +158,7 @@ testAction(req, res) {
 }
 ```
 
-#### `res.description` _[Usage](https://github.com/eden-js/meta/blob/master/bundles/meta/controllers/meta.js#L299)_
+#### `res.description` _[Usage](https://github.com/ifactorydigital/ifactoryjs_meta/blob/master/bundles/meta/controllers/meta.js#L299)_
 
 ```js
 /**
@@ -172,7 +172,7 @@ testAction(req, res) {
 }
 ```
 
-#### `res.image` _[Usage](https://github.com/eden-js/meta/blob/master/bundles/meta/controllers/meta.js#L328)_
+#### `res.image` _[Usage](https://github.com/ifactorydigital/ifactoryjs_meta/blob/master/bundles/meta/controllers/meta.js#L328)_
 
 ```js
 /**
